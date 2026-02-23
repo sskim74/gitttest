@@ -6,21 +6,24 @@
 
 body {
     font-family: 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    color: #fff;
 }
 
 .container {
-    background: white;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 40px;
     max-width: 600px;
     width: 100%;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 header {
@@ -30,12 +33,15 @@ header {
 
 h1 {
     font-size: 2rem;
-    color: #333;
     margin-bottom: 10px;
+    background: linear-gradient(135deg, #e94560, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .subtitle {
-    color: #666;
+    color: #a0a0a0;
     font-size: 1.1rem;
 }
 
@@ -49,7 +55,7 @@ h1 {
 .score-item {
     text-align: center;
     padding: 15px 25px;
-    background: #f8f9fa;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 12px;
 }
 
@@ -63,95 +69,131 @@ h1 {
 .score-item span:last-child {
     font-size: 1.8rem;
     font-weight: bold;
-    color: #667eea;
+    color: #e94560;
 }
 
 .question-area {
-    text-align: center;
-    margin-bottom: 30px;
-    padding: 30px;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
-    border-radius: 15px;
+    margin-bottom: 25px;
 }
 
-.hint-label {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 15px;
-}
-
-.initials {
-    font-size: 4rem;
+.question {
+    font-size: 1.3rem;
     font-weight: bold;
-    color: #667eea;
-    letter-spacing: 10px;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-}
-
-.hint-text {
-    font-size: 0.9rem;
-    color: #999;
-    margin-top: 10px;
-    min-height: 20px;
-}
-
-.input-area {
-    display: flex;
-    gap: 10px;
     margin-bottom: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    line-height: 1.6;
+}
+
+.choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.choice-btn {
+    padding: 15px 20px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+}
+
+.choice-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #e94560;
+    transform: translateX(5px);
+}
+
+.choice-btn.selected {
+    background: rgba(233, 69, 96, 0.3);
+    border-color: #e94560;
+}
+
+.choice-btn.correct {
+    background: rgba(72, 187, 120, 0.5) !important;
+    border-color: #48bb78 !important;
+}
+
+.choice-btn.wrong {
+    background: rgba(231, 76, 60, 0.5) !important;
+    border-color: #e74c3c !important;
+}
+
+.choice-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 
 #answer-input {
-    flex: 1;
+    width: 100%;
     padding: 15px 20px;
     font-size: 1.1rem;
-    border: 2px solid #e0e0e0;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 10px;
     outline: none;
     transition: border-color 0.3s;
 }
 
 #answer-input:focus {
-    border-color: #667eea;
+    border-color: #e94560;
 }
 
-#answer-input:disabled {
-    background: #f5f5f5;
-    cursor: not-allowed;
+#answer-input::placeholder {
+    color: #888;
+}
+
+.button-area {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
 }
 
 button {
-    padding: 15px 25px;
+    padding: 15px 40px;
     font-size: 1rem;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.3s;
     font-weight: bold;
-}
-
-#submit-btn {
-    background: #667eea;
+    background: #e94560;
     color: white;
 }
 
-#submit-btn:hover {
-    background: #5a67d8;
+button:hover:not(:disabled) {
+    background: #ff6b6b;
     transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(233, 69, 96, 0.4);
 }
 
-#submit-btn:disabled {
-    background: #ccc;
+button:disabled {
+    background: #555;
     cursor: not-allowed;
-    transform: none;
+}
+
+#next-btn {
+    background: #48bb78;
+}
+
+#next-btn:hover {
+    background: #38a169;
+    box-shadow: 0 5px 20px rgba(72, 187, 120, 0.4);
 }
 
 .feedback {
     text-align: center;
     padding: 15px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     font-weight: bold;
     min-height: 50px;
     display: flex;
@@ -160,78 +202,17 @@ button {
 }
 
 .feedback.correct {
-    background: #d4edda;
-    color: #155724;
+    background: rgba(72, 187, 120, 0.3);
+    color: #48bb78;
 }
 
 .feedback.wrong {
-    background: #f8d7da;
-    color: #721c24;
-}
-
-.button-area {
-    text-align: center;
-}
-
-#next-btn, #restart-btn {
-    background: #48bb78;
-    color: white;
-    padding: 15px 40px;
-}
-
-#next-btn:hover, #restart-btn:hover {
-    background: #38a169;
-    transform: translateY(-2px);
+    background: rgba(231, 76, 60, 0.3);
+    color: #e74c3c;
 }
 
 .hidden {
     display: none !important;
-}
-
-.team-info {
-    margin-top: 40px;
-    padding-top: 30px;
-    border-top: 2px solid #f0f0f0;
-}
-
-.team-info h3 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.team-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
-
-.team-member {
-    text-align: center;
-    padding: 15px 10px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    position: relative;
-}
-
-.team-member.leader {
-    background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
-}
-
-.badge {
-    position: absolute;
-    top: -8px;
-    right: -5px;
-    background: #e74c3c;
-    color: white;
-    font-size: 0.7rem;
-    padding: 3px 8px;
-    border-radius: 10px;
-}
-
-.team-member .name {
-    font-weight: bold;
-    color: #333;
 }
 
 /* 결과 화면 */
@@ -243,19 +224,83 @@ button {
 .result-area h2 {
     font-size: 2rem;
     margin-bottom: 20px;
+    color: #e94560;
 }
 
-.result-area .final-score {
+.final-score {
     font-size: 3rem;
     font-weight: bold;
-    color: #667eea;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.grade-badge {
+    background: linear-gradient(135deg, #e94560, #ff6b6b);
+    padding: 20px 40px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.grade-emoji {
+    font-size: 3rem;
+}
+
+.grade-name {
+    font-size: 1.8rem;
+    font-weight: bold;
 }
 
 .result-area .message {
-    font-size: 1.1rem;
-    color: #666;
+    font-size: 1.2rem;
+    color: #ccc;
     margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* 등급 안내 */
+.grade-info {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.grade-info h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.grade-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.grade-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.grade-icon {
+    font-size: 1.5rem;
+    width: 40px;
+}
+
+.grade-title {
+    flex: 1;
+    font-weight: bold;
+    color: #fff;
+}
+
+.grade-range {
+    color: #888;
+    font-size: 0.9rem;
 }
 
 /* 반응형 */
@@ -268,15 +313,15 @@ button {
         font-size: 1.5rem;
     }
     
-    .initials {
-        font-size: 3rem;
+    .question {
+        font-size: 1.1rem;
     }
     
-    .team-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .final-score {
+        font-size: 2.5rem;
     }
     
-    .score-board {
-        gap: 20px;
+    .grade-name {
+        font-size: 1.4rem;
     }
 }

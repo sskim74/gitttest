@@ -3,59 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>초성 이름 맞추기 게임</title>
+    <title>🎸 서태지 팬덤 테스트</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎯 초성 이름 맞추기 게임</h1>
-            <p class="subtitle">우리 팀원의 이름을 맞춰보세요!</p>
+            <h1>🎸 서태지 팬덤 테스트</h1>
+            <p class="subtitle">당신은 서태지를 얼마나 알고 있나요?</p>
         </header>
 
         <div class="game-area">
             <div class="score-board">
                 <div class="score-item">
-                    <span class="label">점수</span>
+                    <span class="label">맞힌 문제</span>
                     <span id="score">0</span>
                 </div>
                 <div class="score-item">
                     <span class="label">진행</span>
-                    <span id="progress">1 / 6</span>
+                    <span id="progress">1 / 10</span>
                 </div>
             </div>
 
             <div class="question-area">
-                <div class="hint-label">이 초성은 누구일까요?</div>
-                <div id="initials" class="initials">...</div>
-                <div id="hint-text" class="hint-text"></div>
-            </div>
-
-            <div class="input-area">
-                <input type="text" id="answer-input" placeholder="이름을 입력하세요" autocomplete="off">
-                <button id="submit-btn" type="button">제출</button>
+                <div id="question" class="question">로딩중...</div>
+                <div id="choices" class="choices"></div>
+                <input type="text" id="answer-input" class="hidden" placeholder="답을 입력하세요" autocomplete="off">
             </div>
 
             <div id="feedback" class="feedback"></div>
 
             <div class="button-area">
+                <button id="submit-btn" type="button">제출</button>
                 <button id="next-btn" class="hidden" type="button">다음 문제 ➡️</button>
-                <button id="restart-btn" class="hidden" type="button">다시 시작 🔄</button>
             </div>
         </div>
 
-        <div class="team-info">
-            <h3>👥 우리 팀</h3>
-            <div class="team-grid">
-                <div class="team-member leader">
-                    <span class="badge">팀장</span>
-                    <span class="name">김선숙</span>
+        <div class="grade-info">
+            <h3>🏆 등급 안내</h3>
+            <div class="grade-list">
+                <div class="grade-item">
+                    <span class="grade-icon">👨‍👩‍👧‍👦</span>
+                    <span class="grade-title">서태지 가족</span>
+                    <span class="grade-range">9~10점</span>
                 </div>
-                <div class="team-member"><span class="name">하승호</span></div>
-                <div class="team-member"><span class="name">민경환</span></div>
-                <div class="team-member"><span class="name">홍주희</span></div>
-                <div class="team-member"><span class="name">김재원</span></div>
-                <div class="team-member"><span class="name">조현규</span></div>
+                <div class="grade-item">
+                    <span class="grade-icon">🎸</span>
+                    <span class="grade-title">서태지 찐팬</span>
+                    <span class="grade-range">7~8점</span>
+                </div>
+                <div class="grade-item">
+                    <span class="grade-icon">🇰🇷</span>
+                    <span class="grade-title">한국사람</span>
+                    <span class="grade-range">5~6점</span>
+                </div>
+                <div class="grade-item">
+                    <span class="grade-icon">🌍</span>
+                    <span class="grade-title">외국사람</span>
+                    <span class="grade-range">3~4점</span>
+                </div>
+                <div class="grade-item">
+                    <span class="grade-icon">👽</span>
+                    <span class="grade-title">외계인</span>
+                    <span class="grade-range">0~2점</span>
+                </div>
             </div>
         </div>
     </div>

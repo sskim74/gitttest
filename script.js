@@ -1,56 +1,112 @@
-// 팀원 데이터 (김선숙 팀장)
-const teamMembers = [
-    { name: '하승호', initials: 'ㅎㅅㅎ' },
-    { name: '민경환', initials: 'ㅁㄱㅎ' },
-    { name: '홍주희', initials: 'ㅎㅈㅎ' },
-    { name: '김재원', initials: 'ㄱㅈㅇ' },
-    { name: '김선숙', initials: 'ㄱㅅㅅ', isLeader: true },
-    { name: '조현규', initials: 'ㅈㅎㄱ' }
+// 서태지 퀴즈 데이터 (10문제)
+const quizData = [
+    {
+        type: 'choice',
+        question: '서태지가 데뷔한 그룹 이름은?',
+        choices: ['서태지와 아이들', '서태지와 젊은이들', '서태지와 친구들', '서태지와 동무들'],
+        answer: 0,
+        correctAnswer: '서태지와 아이들'
+    },
+    {
+        type: 'choice',
+        question: '서태지와 아이들의 데뷔 연도는?',
+        choices: ['1990년', '1991년', '1992년', '1993년'],
+        answer: 2,
+        correctAnswer: '1992년'
+    },
+    {
+        type: 'choice',
+        question: '서태지와 아이들의 멤버가 아닌 사람은?',
+        choices: ['서태지', '양현석', '이주노', '박진영'],
+        answer: 3,
+        correctAnswer: '박진영'
+    },
+    {
+        type: 'choice',
+        question: '다음 중 서태지와 아이들의 히트곡이 아닌 것은?',
+        choices: ['난 알아요', '교실 이데아', 'Come Back Home', '캔디'],
+        answer: 3,
+        correctAnswer: '캔디 (H.O.T.의 곡)'
+    },
+    {
+        type: 'text',
+        question: '서태지의 부인(아내) 이름은? (힌트: 배우)',
+        answer: '이은성',
+        acceptAnswers: ['이은성', '은성']
+    },
+    {
+        type: 'choice',
+        question: '서태지와 아이들이 해체한 해는?',
+        choices: ['1994년', '1995년', '1996년', '1997년'],
+        answer: 2,
+        correctAnswer: '1996년'
+    },
+    {
+        type: 'text',
+        question: '"난 알아요"의 다음 가사는? "이 세상은..."',
+        answer: '요지경',
+        acceptAnswers: ['요지경', '요지경이야']
+    },
+    {
+        type: 'choice',
+        question: '서태지의 본명은?',
+        choices: ['서태지', '정현철', '서정원', '정태희'],
+        answer: 0,
+        correctAnswer: '서태지 (예명=본명)'
+    },
+    {
+        type: 'choice',
+        question: '서태지가 솔로로 컬래버레이션한 아이돌 그룹은?',
+        choices: ['BTS', 'EXO', '세븐틴', 'NCT'],
+        answer: 0,
+        correctAnswer: 'BTS (방탄소년단)'
+    },
+    {
+        type: 'text',
+        question: '서태지와 아이들의 "교실 이데아"에서 학생들을 깨우치라고 외친 말은? "__여야 한다!" (2글자)',
+        answer: '각성',
+        acceptAnswers: ['각성', '각성해']
+    }
+];
+
+// 등급 정보
+const grades = [
+    { min: 9, max: 10, name: '서태지 가족', emoji: '👨‍👩‍👧‍👦', message: '서태지 닮은 가족이시군요! 당신은 진정한 서태지 가족입니다!' },
+    { min: 7, max: 8, name: '서태지 찐팬', emoji: '🎸', message: '서태지를 진심으로 사랑하는 찐팬이시군요!' },
+    { min: 5, max: 6, name: '한국사람', emoji: '🇰🇷', message: '평범한 한국사람 수준의 서태지 지식을 가지고 계시네요!' },
+    { min: 3, max: 4, name: '외국사람', emoji: '🌍', message: '한국 대중문화에 관심이 있는 외국인이신가요?' },
+    { min: 0, max: 2, name: '외계인', emoji: '👽', message: '당신은 혹시 지구에 온 지 얼마 안 된 외계인?' }
 ];
 
 // 게임 상태
 let currentIndex = 0;
 let score = 0;
-let shuffledMembers = [];
 let isAnswered = false;
 
 // DOM 요소
-let scoreEl, progressEl, initialsEl, hintTextEl, inputEl, submitBtn, nextBtn, restartBtn, feedbackEl;
-
-// 배열 섞기
-function shuffleArray(array) {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-    }
-    return newArray;
-}
+let scoreEl, progressEl, questionEl, choicesEl, inputEl, submitBtn, nextBtn, feedbackEl;
 
 // 게임 초기화
 function initGame() {
     // DOM 요소 캐싱
     scoreEl = document.getElementById('score');
     progressEl = document.getElementById('progress');
-    initialsEl = document.getElementById('initials');
-    hintTextEl = document.getElementById('hint-text');
+    questionEl = document.getElementById('question');
+    choicesEl = document.getElementById('choices');
     inputEl = document.getElementById('answer-input');
     submitBtn = document.getElementById('submit-btn');
     nextBtn = document.getElementById('next-btn');
-    restartBtn = document.getElementById('restart-btn');
     feedbackEl = document.getElementById('feedback');
 
     currentIndex = 0;
     score = 0;
     isAnswered = false;
-    shuffledMembers = shuffleArray(teamMembers);
 
     // 이벤트 리스너 등록
     submitBtn.addEventListener('click', checkAnswer);
     nextBtn.addEventListener('click', nextQuestion);
-    restartBtn.addEventListener('click', restartGame);
     inputEl.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' && !isAnswered) {
             checkAnswer();
         }
     });
@@ -62,27 +118,44 @@ function initGame() {
 // UI 업데이트
 function updateUI() {
     scoreEl.textContent = score;
-    progressEl.textContent = `${currentIndex + 1} / ${teamMembers.length}`;
+    progressEl.textContent = `${currentIndex + 1} / ${quizData.length}`;
 }
 
 // 문제 표시
 function showQuestion() {
-    if (currentIndex >= shuffledMembers.length) {
+    if (currentIndex >= quizData.length) {
         showResult();
         return;
     }
 
-    const member = shuffledMembers[currentIndex];
-    initialsEl.textContent = member.initials;
-    hintTextEl.textContent = member.isLeader ? '💡 힌트: 우리 팀의 리더!' : '';
+    const q = quizData[currentIndex];
+    questionEl.textContent = `Q${currentIndex + 1}. ${q.question}`;
     
-    inputEl.value = '';
-    inputEl.disabled = false;
-    inputEl.focus();
+    // 선택지 영역 초기화
+    choicesEl.innerHTML = '';
+    
+    if (q.type === 'choice') {
+        // 객관식 문제
+        inputEl.classList.add('hidden');
+        
+        q.choices.forEach((choice, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.textContent = choice;
+            btn.dataset.index = index;
+            btn.addEventListener('click', () => selectChoice(index));
+            choicesEl.appendChild(btn);
+        });
+    } else {
+        // 주관식 문제
+        inputEl.classList.remove('hidden');
+        inputEl.value = '';
+        inputEl.focus();
+    }
     
     submitBtn.disabled = false;
+    submitBtn.classList.remove('hidden');
     nextBtn.classList.add('hidden');
-    restartBtn.classList.add('hidden');
     
     feedbackEl.textContent = '';
     feedbackEl.className = 'feedback';
@@ -90,38 +163,82 @@ function showQuestion() {
     isAnswered = false;
 }
 
+// 객관식 선택
+function selectChoice(index) {
+    if (isAnswered) return;
+    
+    // 선택 표시
+    const buttons = choicesEl.querySelectorAll('.choice-btn');
+    buttons.forEach((btn, i) => {
+        btn.classList.remove('selected');
+        if (i === index) {
+            btn.classList.add('selected');
+        }
+    });
+}
+
 // 정답 확인
 function checkAnswer() {
     if (isAnswered) return;
     
-    const userAnswer = inputEl.value.trim();
+    const q = quizData[currentIndex];
+    let isCorrect = false;
+    let userAnswer = '';
     
-    if (!userAnswer) {
-        showFeedback('이름을 입력해주세요!', 'wrong');
-        return;
+    if (q.type === 'choice') {
+        // 객관식 체크
+        const selectedBtn = choicesEl.querySelector('.choice-btn.selected');
+        if (!selectedBtn) {
+            showFeedback('선택지를 선택해주세요!', 'wrong');
+            return;
+        }
+        userAnswer = parseInt(selectedBtn.dataset.index);
+        isCorrect = userAnswer === q.answer;
+    } else {
+        // 주관식 체크
+        userAnswer = inputEl.value.trim();
+        if (!userAnswer) {
+            showFeedback('답을 입력해주세요!', 'wrong');
+            return;
+        }
+        // 정답 확인 (대소문자 무시)
+        isCorrect = q.acceptAnswers.some(ans => 
+            userAnswer.toLowerCase() === ans.toLowerCase()
+        );
     }
-
-    const currentMember = shuffledMembers[currentIndex];
-    const isCorrect = userAnswer === currentMember.name;
     
     isAnswered = true;
-    inputEl.disabled = true;
     submitBtn.disabled = true;
-
+    submitBtn.classList.add('hidden');
+    
+    // 선택지 비활성화
+    const buttons = choicesEl.querySelectorAll('.choice-btn');
+    buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.answer) {
+            btn.classList.add('correct');
+        } else if (q.type === 'choice' && i === userAnswer && !isCorrect) {
+            btn.classList.add('wrong');
+        }
+    });
+    inputEl.disabled = true;
+    
     if (isCorrect) {
-        score += 10;
+        score++;
         updateUI();
-        showFeedback(`🎉 정답입니다! ${currentMember.name}${currentMember.isLeader ? ' (팀장)' : ''}`, 'correct');
+        showFeedback('🎉 정답입니다!', 'correct');
     } else {
-        showFeedback(`❌ 틀렸습니다! 정답은 "${currentMember.name}"${currentMember.isLeader ? ' (팀장)' : ''}입니다.`, 'wrong');
+        const correctText = q.type === 'choice' ? q.correctAnswer : q.answer;
+        showFeedback(`❌ 틀렸습니다! 정답: ${correctText}`, 'wrong');
     }
-
-    if (currentIndex < shuffledMembers.length - 1) {
+    
+    // 다음 버튼 표시
+    if (currentIndex < quizData.length - 1) {
+        nextBtn.textContent = '다음 문제 ➡️';
         nextBtn.classList.remove('hidden');
     } else {
-        setTimeout(() => {
-            showResult();
-        }, 1500);
+        nextBtn.textContent = '결과 보기 🎯';
+        nextBtn.classList.remove('hidden');
     }
 }
 
@@ -133,39 +250,36 @@ function showFeedback(message, type) {
 
 // 다음 문제
 function nextQuestion() {
-    currentIndex++;
-    updateUI();
-    showQuestion();
+    if (currentIndex < quizData.length - 1) {
+        currentIndex++;
+        updateUI();
+        showQuestion();
+    } else {
+        showResult();
+    }
 }
 
 // 결과 화면 표시
 function showResult() {
     const gameArea = document.querySelector('.game-area');
-    const percentage = (score / (teamMembers.length * 10)) * 100;
     
-    let message = '';
-    if (percentage === 100) {
-        message = '🏆 완벽해요! 모든 팀원을 알고 계시네요!';
-    } else if (percentage >= 80) {
-        message = '👏 훌륭해요! 팀원들을 잘 알고 계시네요!';
-    } else if (percentage >= 60) {
-        message = '👍 좋아요! 조금만 더 친해지면 될 것 같아요!';
-    } else if (percentage >= 40) {
-        message = '💪 괜찮아요! 팀원들과 더 친해져 보세요!';
-    } else {
-        message = '😅 팀원들의 이름을 좀 더 기억해보아요!';
-    }
-
+    // 등급 계산
+    const grade = grades.find(g => score >= g.min && score <= g.max);
+    
     gameArea.innerHTML = `
         <div class="result-area">
-            <h2>🎮 게임 종료!</h2>
-            <div class="final-score">${score} / ${teamMembers.length * 10}점</div>
-            <div class="message">${message}</div>
-            <button id="restart-btn-result" type="button">다시 시작 🔄</button>
+            <h2>🎸 서태지 퀴즈 결과</h2>
+            <div class="final-score">${score} / ${quizData.length}점</div>
+            <div class="grade-badge">
+                <span class="grade-emoji">${grade.emoji}</span>
+                <span class="grade-name">${grade.name}</span>
+            </div>
+            <div class="message">${grade.message}</div>
+            <button id="restart-btn" type="button">다시 도전하기 🔄</button>
         </div>
     `;
     
-    document.getElementById('restart-btn-result').addEventListener('click', restartGame);
+    document.getElementById('restart-btn').addEventListener('click', restartGame);
 }
 
 // 게임 다시 시작
