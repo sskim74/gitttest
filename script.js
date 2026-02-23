@@ -105,9 +105,18 @@ function initGame() {
     // 이벤트 리스너 등록
     submitBtn.addEventListener('click', checkAnswer);
     nextBtn.addEventListener('click', nextQuestion);
+    
+    // 입력란 이벤트 - keypress와 keyup 모두 처리
     inputEl.addEventListener('keypress', function(e) {
         if (e.key === 'Enter' && !isAnswered) {
+            e.preventDefault();
             checkAnswer();
+        }
+    });
+    
+    inputEl.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !isAnswered) {
+            e.preventDefault();
         }
     });
 
@@ -136,7 +145,7 @@ function showQuestion() {
     
     if (q.type === 'choice') {
         // 객관식 문제
-        inputEl.classList.add('hidden');
+        inputEl.style.display = 'none';
         
         q.choices.forEach((choice, index) => {
             const btn = document.createElement('button');
@@ -148,9 +157,10 @@ function showQuestion() {
         });
     } else {
         // 주관식 문제
-        inputEl.classList.remove('hidden');
+        inputEl.style.display = 'block';
         inputEl.value = '';
-        inputEl.focus();
+        inputEl.disabled = false;
+        setTimeout(() => inputEl.focus(), 100);
     }
     
     submitBtn.disabled = false;
@@ -211,7 +221,7 @@ function checkAnswer() {
     submitBtn.disabled = true;
     submitBtn.classList.add('hidden');
     
-    // 선택지 비활성화
+    // 선택지/입력란 비활성화
     const buttons = choicesEl.querySelectorAll('.choice-btn');
     buttons.forEach((btn, i) => {
         btn.disabled = true;
@@ -221,7 +231,9 @@ function checkAnswer() {
             btn.classList.add('wrong');
         }
     });
-    inputEl.disabled = true;
+    if (q.type === 'text') {
+        inputEl.disabled = true;
+    }
     
     if (isCorrect) {
         score++;
