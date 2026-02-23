@@ -405,74 +405,67 @@
     </div>
 
     <script>
-        // 서태지 퀴즈 데이터 (10문제)
+        // 서태지 퀴즈 데이터 (10문제) - 모두 객관식
         const quizData = [
             {
                 type: 'choice',
                 question: '서태지가 데뷔한 그룹 이름은?',
                 choices: ['서태지와 아이들', '서태지와 젊은이들', '서태지와 친구들', '서태지와 동무들'],
-                answer: 0,
-                correctAnswer: '서태지와 아이들'
+                answer: 0
             },
             {
                 type: 'choice',
                 question: '서태지와 아이들의 데뷔 연도는?',
                 choices: ['1990년', '1991년', '1992년', '1993년'],
-                answer: 2,
-                correctAnswer: '1992년'
+                answer: 2
             },
             {
                 type: 'choice',
                 question: '서태지와 아이들의 멤버가 아닌 사람은?',
                 choices: ['서태지', '양현석', '이주노', '박진영'],
-                answer: 3,
-                correctAnswer: '박진영'
+                answer: 3
             },
             {
                 type: 'choice',
                 question: '다음 중 서태지와 아이들의 히트곡이 아닌 것은?',
                 choices: ['난 알아요', '교실 이데아', 'Come Back Home', '캔디'],
-                answer: 3,
-                correctAnswer: '캔디 (H.O.T.의 곡)'
+                answer: 3
             },
             {
-                type: 'text',
-                question: '서태지의 부인(아내) 이름은? (힌트: 배우)',
-                answer: '이은성',
-                acceptAnswers: ['이은성', '은성']
+                type: 'choice',
+                question: '서태지의 부인(아내) 이름은?',
+                choices: ['이은성', '김태희', '송혜교', '전지현'],
+                answer: 0
             },
             {
                 type: 'choice',
                 question: '서태지와 아이들이 해체한 해는?',
                 choices: ['1994년', '1995년', '1996년', '1997년'],
-                answer: 2,
-                correctAnswer: '1996년'
+                answer: 2
             },
             {
-                type: 'text',
-                question: '"난 알아요"의 다음 가사는? "이 세상은..."',
-                answer: '요지경',
-                acceptAnswers: ['요지경', '요지경이야']
+                type: 'choice',
+                question: '서태지와 아이들의 대표적인 음악 장르는?',
+                choices: ['발라드', '록/힙합', '트로트', '클래식'],
+                answer: 1
             },
             {
                 type: 'choice',
                 question: '서태지의 본명은?',
-                choices: ['서태지', '정현철', '서정원', '정태희'],
-                answer: 0,
-                correctAnswer: '서태지 (예명=본명)'
+                choices: ['정현철', '서정원', '박진영', '이은성'],
+                answer: 0
             },
             {
                 type: 'choice',
                 question: '서태지가 솔로로 컬래버레이션한 아이돌 그룹은?',
                 choices: ['BTS', 'EXO', '세븐틴', 'NCT'],
-                answer: 0,
-                correctAnswer: 'BTS (방탄소년단)'
+                answer: 0
             },
             {
-                type: 'text',
-                question: '서태지와 아이들의 "교실 이데아"에서 학생들을 깨우치라고 외친 말은? "__여야 한다!" (2글자)',
-                answer: '각성',
-                acceptAnswers: ['각성', '각성해']
+                type: 'choice',
+                question: '"교실 이데아"에서 학생들에게 외친 말은?',
+                choices: ['각성', '반란', '자유', '평화'],
+                answer: 0
             }
         ];
 
@@ -512,14 +505,6 @@
             // 이벤트 리스너 등록
             submitBtn.addEventListener('click', checkAnswer);
             nextBtn.addEventListener('click', nextQuestion);
-            
-            // 입력란 이벤트
-            inputEl.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter' && !isAnswered) {
-                    e.preventDefault();
-                    checkAnswer();
-                }
-            });
 
             updateUI();
             showQuestion();
@@ -543,26 +528,17 @@
             
             // 선택지 영역 초기화
             choicesEl.innerHTML = '';
+            inputEl.style.display = 'none';
             
-            if (q.type === 'choice') {
-                // 객관식 문제
-                inputEl.style.display = 'none';
-                
-                q.choices.forEach((choice, index) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'choice-btn';
-                    btn.textContent = choice;
-                    btn.dataset.index = index;
-                    btn.addEventListener('click', () => selectChoice(index));
-                    choicesEl.appendChild(btn);
-                });
-            } else {
-                // 주관식 문제
-                inputEl.style.display = 'block';
-                inputEl.value = '';
-                inputEl.disabled = false;
-                setTimeout(() => inputEl.focus(), 100);
-            }
+            // 객관식 선택지 생성
+            q.choices.forEach((choice, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.textContent = choice;
+                btn.dataset.index = index;
+                btn.addEventListener('click', () => selectChoice(index));
+                choicesEl.appendChild(btn);
+            });
             
             submitBtn.disabled = false;
             submitBtn.style.display = 'inline-block';
@@ -593,56 +569,37 @@
             if (isAnswered) return;
             
             const q = quizData[currentIndex];
-            let isCorrect = false;
-            let userAnswer = '';
+            const selectedBtn = choicesEl.querySelector('.choice-btn.selected');
             
-            if (q.type === 'choice') {
-                // 객관식 체크
-                const selectedBtn = choicesEl.querySelector('.choice-btn.selected');
-                if (!selectedBtn) {
-                    showFeedback('선택지를 선택해주세요!', 'wrong');
-                    return;
-                }
-                userAnswer = parseInt(selectedBtn.dataset.index);
-                isCorrect = userAnswer === q.answer;
-            } else {
-                // 주관식 체크
-                userAnswer = inputEl.value.trim();
-                if (!userAnswer) {
-                    showFeedback('답을 입력해주세요!', 'wrong');
-                    return;
-                }
-                // 정답 확인
-                isCorrect = q.acceptAnswers.some(ans => 
-                    userAnswer === ans
-                );
+            if (!selectedBtn) {
+                showFeedback('선택지를 선택해주세요!', 'wrong');
+                return;
             }
+            
+            const userAnswer = parseInt(selectedBtn.dataset.index);
+            const isCorrect = userAnswer === q.answer;
             
             isAnswered = true;
             submitBtn.disabled = true;
             submitBtn.style.display = 'none';
             
-            // 선택지/입력란 비활성화
+            // 선택지 비활성화 및 정답 표시
             const buttons = choicesEl.querySelectorAll('.choice-btn');
             buttons.forEach((btn, i) => {
                 btn.disabled = true;
                 if (i === q.answer) {
                     btn.classList.add('correct');
-                } else if (q.type === 'choice' && i === userAnswer && !isCorrect) {
+                } else if (i === userAnswer && !isCorrect) {
                     btn.classList.add('wrong');
                 }
             });
-            if (q.type === 'text') {
-                inputEl.disabled = true;
-            }
             
             if (isCorrect) {
                 score++;
                 updateUI();
                 showFeedback('🎉 정답입니다!', 'correct');
             } else {
-                const correctText = q.type === 'choice' ? q.correctAnswer : q.answer;
-                showFeedback(`❌ 틀렸습니다! 정답: ${correctText}`, 'wrong');
+                showFeedback(`❌ 틀렸습니다! 정답: ${q.choices[q.answer]}`, 'wrong');
             }
             
             // 다음 버튼 표시
