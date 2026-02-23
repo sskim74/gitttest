@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>초성 이름 맞추기 게임</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 초성 이름 맞추기 게임</h1>
+            <p class="subtitle">우리 팀원의 이름을 맞춰보세요!</p>
+        </header>
+
+        <div class="game-area">
+            <div class="score-board">
+                <div class="score-item">
+                    <span class="label">점수</span>
+                    <span id="score">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="label">진행</span>
+                    <span id="progress">1 / 6</span>
+                </div>
+            </div>
+
+            <div class="question-area">
+                <div class="hint-label">이 초성은 누구일까요?</div>
+                <div id="initials" class="initials">ㅎㅅㅎ</div>
+                <div id="hint-text" class="hint-text"></div>
+            </div>
+
+            <div class="input-area">
+                <input type="text" id="answer-input" placeholder="이름을 입력하세요" autocomplete="off">
+                <button id="submit-btn" onclick="checkAnswer()">제출</button>
+            </div>
+
+            <div id="feedback" class="feedback"></div>
+
+            <div class="button-area">
+                <button id="next-btn" class="hidden" onclick="nextQuestion()">다음 문제 ➡️</button>
+                <button id="restart-btn" class="hidden" onclick="restartGame()">다시 시작 🔄</button>
+            </div>
+        </div>
+
+        <div class="team-info">
+            <h3>👥 우리 팀</h3>
+            <div class="team-grid">
+                <div class="team-member leader">
+                    <span class="badge">팀장</span>
+                    <span class="name">김선숙</span>
+                </div>
+                <div class="team-member"><span class="name">하승호</span></div>
+                <div class="team-member"><span class="name">민경환</span></div>
+                <div class="team-member"><span class="name">홍주희</span></div>
+                <div class="team-member"><span class="name">김재원</span></div>
+                <div class="team-member"><span class="name">조현규</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
